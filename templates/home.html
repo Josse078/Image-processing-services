@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image processing service</title>
+</head>
+<body>
+    <h1>Image processing service</h1>
+    <h1>Upload a Photo</h1>
+    <form action="/upload" method="POST" enctype="multipart/form-data">
+        <input type="file" name="photo" accept="image/*" required>
+        <button type="submit">Upload</button>
+    </form>
+    <h2>Upload a logo for watermark</h2>
+    <form action="/upload_logo" method="POST" enctype="multipart/form-data">
+        <input type="file" name="logo" accept="image/*" required>
+        <button type="submit">Upload</button>
+    </form>
+    {% if logo_image %}
+        <h2>Uploaded Logo:</h2>
+        <img src="{{ url_for('static', filename=logo_image) }}" alt="Logo Image" style="max-width: 300px;">
+    {% endif %}
+    {% if uploaded_image %}
+        <h2>Uploaded Image:</h2>
+        <img src="{{ url_for('static', filename=uploaded_image) }}" alt="Uploaded Image" style="max-width: 300px;">
+    {% endif %}
+    <form action="/resize" method="POST">
+        <input type="number" name="width" placeholder="Width" required>
+        <input type="number" name="height" placeholder="Height" required>
+        <button type="submit">Resize</button>
+    </form>
+    <p>The Conditions for cropping is that the first coordinate should not exceed or equal the second coordinate, the first coordinate should not be lower than 0, and the second coordinate should not exceed the original height or width  </p>
+    <form action="/crop" method="POST">
+        <input type="number" name="x1" placeholder="X1 coordinate" required>
+        <input type="number" name="y1" placeholder="Y1 coordinate" required>
+        <input type="number" name="x2" placeholder="X2 coordinate" required>
+        <input type="number" name="y2" placeholder="Y2 coordinate" required>
+        <button type="submit">Crop</button>
+    </form>
+    <form action="/rotate" method="POST">
+        <input type="number" name="angle" placeholder="Angle (degrees)" required>
+        <button type="submit">Rotate</button>
+    </form>
+    <form action="/watermark" method="POST">
+        <button type="submit">Add Watermark</button>
+    </form>
+    <form action="/flip" method="POST">
+        <button type="submit">Flip</button>
+    </form>
+    <form action="/mirror" method="POST">
+        <button type="submit">Mirror</button>
+    </form>
+    <form action="/convert" method="POST">
+        <label for="format">Choose format</label>
+        <select name="format" id="format" required>
+            <option value="jpeg">JPEG</option>
+            <option value="png">PNG</option>
+            <option value="jpg">JPG</option>
+        </select><br><br>
+        <button type="submit">Convert images</button>
+    </form>
+    <form action="/greyscale" method="POST">
+        <button type="submit">Convert to Greyscale</button>
+    </form>
+</body>
+</html>
